@@ -32,16 +32,19 @@ export default class MultipleProjectSelector extends React.Component {
         .filter(project => selectedProjectIds.has(parseInt(project.id, 10)))
         .map(project => project.slug);
 
-    const summary = projectList.length
-      ? `${projectList.join(', ')}`
-      : t('None selected, using all');
+    const summary =
+      projectList && projectList.length
+        ? `${projectList.join(', ')}`
+        : t('None selected, using all');
 
-    const options = projects.map(project => {
-      return {
-        value: parseInt(project.id, 10),
-        label: project.slug,
-      };
-    });
+    const options =
+      projects &&
+      projects.map(project => {
+        return {
+          value: parseInt(project.id, 10),
+          label: project.slug,
+        };
+      });
 
     return (
       <HeaderItem className={className} label={t('Projects')}>
