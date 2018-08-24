@@ -73,8 +73,7 @@ class HealthRequestWithParams extends React.Component {
     includePrevious: true,
     timeseries: true,
     interval: '1d',
-    getCategory: (tagObject = {}) =>
-      typeof tagObject.value !== 'undefined' ? tagObject.value : tagObject,
+    getCategory: i => i,
   };
 
   constructor(props) {
@@ -105,8 +104,8 @@ class HealthRequestWithParams extends React.Component {
   }
 
   // Is going to be called with an object with `value` and `_health_id`
-  getCategory = tagObject => {
-    return this.props.getCategory(tagObject);
+  getCategory = ({value} = {}) => {
+    return this.props.getCategory(value);
   };
 
   transformTimeseriesData = () => {

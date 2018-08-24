@@ -72,7 +72,7 @@ const ReleasesRequest = withApi(
           timeseries={true}
           interval="1d"
           getCategory={({shortVersion}) => shortVersion}
-          query={data.map(release => `release:${release.slug}`)}
+          filters={data.map(({version}) => `release:${version}`)}
         >
           {children}
         </HealthRequest>
@@ -122,11 +122,7 @@ const OrganizationHealthErrors = styled(
               }}
             </HealthRequest>
 
-            <HealthRequest
-              tag="user"
-              timeseries={false}
-              getCategory={({user}) => user.label}
-            >
+            <HealthRequest tag="user" timeseries={false}>
               {({originalData, loading, tag}) => (
                 <React.Fragment>
                   {!loading && (
@@ -145,8 +141,10 @@ const OrganizationHealthErrors = styled(
                               this.handleSetFilter(tag, value[tag]._health_id)}
                           >
                             <IdBadge
-                              user={value.user}
-                              displayName={value.user && value.user.label}
+                              user={value[tag].value}
+                              displayName={
+                                value[tag] && value[tag].value && value[tag].value.label
+                              }
                             />
                           </div>
                         );
@@ -176,7 +174,7 @@ const OrganizationHealthErrors = styled(
               }}
             </ReleasesRequest>
 
-            <ReleasesRequest limit={5} organization={organization}>
+            <ReleasesRequest limit={10} organization={organization}>
               {({data, loading}) => {
                 if (!data) return null;
                 return (
@@ -188,12 +186,7 @@ const OrganizationHealthErrors = styled(
             </ReleasesRequest>
           </Flex>
           <Flex>
-            <HealthRequest
-              tag="error.type"
-              getCategory={({value}) => value}
-              timeseries={false}
-              interval="1d"
-            >
+            <HealthRequest tag="error.type" timeseries={false} interval="1d">
               {({data, loading}) => {
                 if (!data) return null;
                 return (
@@ -260,7 +253,7 @@ const OrganizationHealthErrors = styled(
                             {
                               seriesName: t('Errors By Release'),
                               data: data.map(row => ({
-                                name: row.release.shortVersion,
+                                name: row.release.value.shortVersion,
                                 value: row.count,
                               })),
                             },
@@ -318,6 +311,7 @@ class OrganizationHealthErrorsContainer extends React.Component {
 }
 
 export default withApi(withLatestContext(OrganizationHealthErrorsContainer));
+export {OrganizationHealthErrors};
 
 const Header = styled(Flex)`
   font-size: 18px;
