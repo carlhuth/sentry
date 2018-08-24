@@ -110,7 +110,7 @@ const OrganizationHealthErrors = styled(
               tag="error.handled"
               timeseries={true}
               interval="1d"
-              getCategory={({value}) => (value ? 'Handled' : 'Crash')}
+              getCategory={value => (value ? 'Handled' : 'Crash')}
             >
               {({data, loading}) => {
                 if (!data) return null;

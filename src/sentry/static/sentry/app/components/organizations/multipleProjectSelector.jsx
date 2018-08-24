@@ -26,9 +26,11 @@ export default class MultipleProjectSelector extends React.Component {
     const {className, value, projects, onChange, onUpdate} = this.props;
     const selectedProjectIds = new Set(value);
 
-    const projectList = projects
-      .filter(project => selectedProjectIds.has(parseInt(project.id, 10)))
-      .map(project => project.slug);
+    const projectList =
+      projects &&
+      projects
+        .filter(project => selectedProjectIds.has(parseInt(project.id, 10)))
+        .map(project => project.slug);
 
     const summary = projectList.length
       ? `${projectList.join(', ')}`
