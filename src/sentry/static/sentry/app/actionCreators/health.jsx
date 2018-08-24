@@ -43,7 +43,6 @@ export const doHealthRequest = (
     q: filters,
     ...(topk ? {topk} : {}),
   };
-  console.log(query);
 
   return api.requestPromise(`${BASE_URL(organization)}${path}`, {
     query,
