@@ -14,7 +14,11 @@ const Delta = ({current, previous, className}) => {
   return (
     <StyledDelta direction={direction} className={className}>
       {!!direction && <DeltaCaret direction={direction} src="icon-chevron-down" />}
-      {changePercent}%
+      {changePercent !== 0 ? (
+        `${changePercent}%`
+      ) : (
+        <span dangerouslySetInnerHTML={{__html: '&mdash;'}} />
+      )}
     </StyledDelta>
   );
 };
@@ -35,7 +39,8 @@ const StyledDelta = styled(Flex)`
   padding: 0 ${space(0.25)};
   margin-right: ${space(0.5)};
   font-size: ${p => p.theme.fontSizeSmall};
-  color: ${p => (p.direction > 0 ? p.theme.green : p.theme.red)};
+  color: ${p =>
+    p.direction > 0 ? p.theme.green : p.direction < 0 ? p.theme.red : p.theme.gray2};
 `;
 
 class EventsTableChart extends React.Component {
